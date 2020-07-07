@@ -53,48 +53,48 @@ class YOLOV3(object):
         pi = 0.01
         bias_init[:,4] = -np.log((1-pi)/pi)
 
-        route_1, route_2, input_data = darknet53(input_data, self.trainable) # R1:64 R2:64 i:128
+        route_1, route_2, input_data = backbone.darknet53(input_data, self.trainable) # R1:64 R2:64 i:128
  
-        input_data = convolutional(input_data, (1, 1, 128,  128), self.trainable, 'conv52')
-        input_data = convolutional(input_data, (3, 3,  128, 256), self.trainable, 'conv53')
-        input_data = convolutional(input_data, (1, 1, 256,  128), self.trainable, 'conv54')
-        input_data = convolutional(input_data, (3, 3,  128, 256), self.trainable, 'conv55')
-        input_data = convolutional(input_data, (1, 1, 256,  128), self.trainable, 'conv56')
+        input_data = common.convolutional(input_data, (1, 1, 128,  128), self.trainable, 'conv52')
+        input_data = common.convolutional(input_data, (3, 3,  128, 256), self.trainable, 'conv53')
+        input_data = common.convolutional(input_data, (1, 1, 256,  128), self.trainable, 'conv54')
+        input_data = common.convolutional(input_data, (3, 3,  128, 256), self.trainable, 'conv55')
+        input_data = common.convolutional(input_data, (1, 1, 256,  128), self.trainable, 'conv56')
 
-        conv_lobj_branch = convolutional(input_data, (3, 3, 128, 256), self.trainable, name='conv_lobj_branch')
-        conv_lbbox = convolutional(conv_lobj_branch, (1, 1, 256, 3*(self.num_class + 5)),
+        conv_lobj_branch = common.convolutional(input_data, (3, 3, 128, 256), self.trainable, name='conv_lobj_branch')
+        conv_lbbox = common.convolutional(conv_lobj_branch, (1, 1, 256, 3*(self.num_class + 5)),
                         trainable=self.trainable, name='conv_lbbox', activate=False, bn=False, bias_init=bias_init)
 
-        input_data = convolutional(input_data, (1, 1,  128,  64), self.trainable, 'conv57')
-        input_data = upsample(input_data, name='upsample0', method=self.upsample_method)
+        input_data = common.convolutional(input_data, (1, 1,  128,  64), self.trainable, 'conv57')
+        input_data = common.upsample(input_data, name='upsample0', method=self.upsample_method)
 
         with tf.variable_scope('route_1'):
             input_data = tf.concat([input_data, route_2], axis=-1) #64+64 = 128
 
-        input_data = convolutional(input_data, (1, 1, 128, 128), self.trainable, 'conv58')
-        input_data = convolutional(input_data, (3, 3, 128, 256), self.trainable, 'conv59')
-        input_data = convolutional(input_data, (1, 1, 256, 128), self.trainable, 'conv60')
-        input_data = convolutional(input_data, (3, 3, 128, 256), self.trainable, 'conv61')
-        input_data = convolutional(input_data, (1, 1, 256, 128), self.trainable, 'conv62')
+        input_data = common.convolutional(input_data, (1, 1, 128, 128), self.trainable, 'conv58')
+        input_data = common.convolutional(input_data, (3, 3, 128, 256), self.trainable, 'conv59')
+        input_data = common.convolutional(input_data, (1, 1, 256, 128), self.trainable, 'conv60')
+        input_data = common.convolutional(input_data, (3, 3, 128, 256), self.trainable, 'conv61')
+        input_data = common.convolutional(input_data, (1, 1, 256, 128), self.trainable, 'conv62')
 
-        conv_mobj_branch = convolutional(input_data, (3, 3, 128, 256),  self.trainable, name='conv_mobj_branch' )
-        conv_mbbox = convolutional(conv_mobj_branch, (1, 1, 256, 3*(self.num_class + 5)),
+        conv_mobj_branch = common.convolutional(input_data, (3, 3, 128, 256),  self.trainable, name='conv_mobj_branch' )
+        conv_mbbox = common.convolutional(conv_mobj_branch, (1, 1, 256, 3*(self.num_class + 5)),
                         trainable=self.trainable, name='conv_mbbox', activate=False, bn=False, bias_init=bias_init)
 
-        input_data = convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv63')
-        input_data = upsample(input_data, name='upsample1', method=self.upsample_method)
+        input_data = common.convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv63')
+        input_data = common.upsample(input_data, name='upsample1', method=self.upsample_method)
 
         with tf.variable_scope('route_2'):
             input_data = tf.concat([input_data, route_1], axis=-1) #64+64 =128
 
-        input_data = convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv64')
-        input_data = convolutional(input_data, (3, 3, 64, 128), self.trainable, 'conv65')
-        input_data = convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv66')
-        input_data = convolutional(input_data, (3, 3, 64, 128), self.trainable, 'conv67')
-        input_data = convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv68')
+        input_data = common.convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv64')
+        input_data = common.convolutional(input_data, (3, 3, 64, 128), self.trainable, 'conv65')
+        input_data = common.convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv66')
+        input_data = common.convolutional(input_data, (3, 3, 64, 128), self.trainable, 'conv67')
+        input_data = common.convolutional(input_data, (1, 1, 128, 64), self.trainable, 'conv68')
 
-        conv_sobj_branch = convolutional(input_data, (3, 3, 64, 128), self.trainable, name='conv_sobj_branch')
-        conv_sbbox = convolutional(conv_sobj_branch, (1, 1, 128, 3*(self.num_class + 5)),
+        conv_sobj_branch = common.convolutional(input_data, (3, 3, 64, 128), self.trainable, name='conv_sobj_branch')
+        conv_sbbox = common.convolutional(conv_sobj_branch, (1, 1, 128, 3*(self.num_class + 5)),
                         trainable=self.trainable, name='conv_sbbox', activate=False, bn=False, bias_init=bias_init)
 
         return conv_lbbox, conv_mbbox, conv_sbbox
