@@ -105,6 +105,7 @@ class YOLOV3(object):
         conv_shape       = tf.shape(conv_output)
         batch_size       = conv_shape[0]
         output_size      = conv_shape[1]
+        output_size_f    = tf.to_float(output_size)
         anchor_per_scale = len(anchors)
 
         conv_output = tf.reshape(conv_output, (batch_size, output_size, output_size, anchor_per_scale, 5 + self.num_class))
