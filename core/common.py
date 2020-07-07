@@ -14,7 +14,7 @@
 import tensorflow as tf
 
 
-def convolutional(input_data, filters_shape, trainable, name, downsample=False, activate=True, bn=True):
+def convolutional(input_data, filters_shape, trainable, name, downsample=False, activate=True, bn=True, bias_init=0.0):
 
     with tf.variable_scope(name):
         if downsample:
@@ -38,10 +38,10 @@ def convolutional(input_data, filters_shape, trainable, name, downsample=False, 
                                                  moving_variance_initializer=tf.ones_initializer(), training=trainable)
         else:
             bias = tf.get_variable(name='bias', shape=filters_shape[-1], trainable=True,
-                                   dtype=tf.float32, initializer=tf.constant_initializer(0.0))
+                                   dtype=tf.float32, initializer=tf.constant_initializer(bias_init))
             conv = tf.nn.bias_add(conv, bias)
 
-        if activate == True: conv = tf.nn.leaky_relu(conv, alpha=0.1)
+        if activate == True: conv = tf.nn.relu(conv)
 
     return conv
 
