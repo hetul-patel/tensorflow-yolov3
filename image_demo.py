@@ -19,8 +19,8 @@ from PIL import Image
 
 return_elements = ["input/input_data:0", "pred_sbbox/concat_2:0", "pred_mbbox/concat_2:0", "pred_lbbox/concat_2:0"]
 pb_file         = "./yolov3_coco.pb"
-image_path      = "./docs/images/road.jpeg"
-num_classes     = 80
+image_path      = "/content/drive/My Drive/ColabModels/Yolov3_VOC/weights/YOLOV3_CKPT.ckpt-1.pb"
+num_classes     = 20
 input_size      = 416
 graph           = tf.Graph()
 

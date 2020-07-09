@@ -99,7 +99,7 @@ class YOLOV3(object):
 
         return conv_lbbox, conv_mbbox, conv_sbbox
 
-    def decode(self, conv_output, anchors, stride):
+    def decode_ssd(self, conv_output, anchors, stride):
         # ssd style
         SCALE_FACTORS = [10.0, 10.0, 5.0, 5.0]
         conv_shape       = tf.shape(conv_output)
@@ -138,7 +138,7 @@ class YOLOV3(object):
         return tf.concat([pred_xywh, pred_conf, pred_prob], axis=-1)
 
 
-    def decode_yolo(self, conv_output, anchors, stride):
+    def decode(self, conv_output, anchors, stride):
         """
         return tensor of shape [batch_size, output_size, output_size, anchor_per_scale, 5 + num_classes]
                contains (x, y, w, h, score, probability)

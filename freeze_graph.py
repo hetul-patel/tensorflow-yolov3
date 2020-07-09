@@ -15,8 +15,8 @@
 import tensorflow as tf
 from core.yolov3 import YOLOV3
 
-pb_file = "./yolov3_coco.pb"
-ckpt_file = "./checkpoint/yolov3_coco_demo.ckpt"
+ckpt_file = "/content/drive/My Drive/ColabModels/Yolov3_VOC/weights/YOLOV3_CKPT.ckpt-1"
+pb_file = ckpt_file + ".pb"
 output_node_names = ["input/input_data", "pred_sbbox/concat_2", "pred_mbbox/concat_2", "pred_lbbox/concat_2"]
 
 with tf.name_scope('input'):
